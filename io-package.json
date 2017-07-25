@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "onewire",
-        "version": "0.6.0",
+        "version": "0.6.1",
         "news": {
             "0.5.0": {
                 "en": "beta version",
