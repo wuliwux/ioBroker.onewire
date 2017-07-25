@@ -121,7 +121,7 @@ function main() {
 
     function getDirectories(srcpath) {
         return fs.readdirSync(srcpath)
-            .filter(file => fs.lstatSync(path.join(srcpath, file)).isDirectory())
+            .filter(file => fs.lstatSync(path.join(srcpath, file)))
     }
 
     function Worker(directory) {
