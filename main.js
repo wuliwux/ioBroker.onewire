@@ -211,7 +211,7 @@ function main() {
         };
     }
 
-     adapter.log.log("path: "+adapter.config.path );
+     adapter.log.info("path: "+adapter.config.path );
 
     var workers = [];
     var dirs = getDirectories(adapter.config.path);
