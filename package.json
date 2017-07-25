@@ -1,0 +1,46 @@
+{
+  "name": "iobroker.onewire",
+  "version": "0.5.0",
+  "description": "ioBroker onewire Adapter",
+  "author": {
+    "name": "wuliwux",
+    "email": "wuliwux1@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "wuliwux",
+      "email": "wuliwux1@gmail.com"
+    }
+  ],
+  "homepage": "https://github.com/ioBroker/ioBroker.onewire",
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "onewire",
+    "Smart Home",
+    "home automation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.onewire"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+      "grunt": "^0.4.5",
+      "grunt-replace": "^0.9.3",
+      "grunt-contrib-jshint": "^0.11.2",
+      "grunt-jscs": "^2.0.0",
+      "grunt-http": "^1.6.0",
+      "mocha": "^2.3.4",
+      "chai": "^3.4.1"
+  },
+  "main": "main.js",
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha"
+  },
+  "bugs": {
+    "url": "https://github.com/ioBroker/ioBroker.onewire/issues"
+  },
+  "readmeFilename": "README.md"
+}
