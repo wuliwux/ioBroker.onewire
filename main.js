@@ -192,7 +192,7 @@ function main() {
                             adapter.setState(worker.reachableSymbol, false, true);
                             worker.reachable = false;
                         }
-                    } else if (index === 2) {
+                    } else if (index === 2 && worker.reachable) {
                         var x = round(parseFloat(value) / 1000, 2);
                         if (x !== worker.value) {
                             adapter.setState(worker.valueSymbol, x, true);
