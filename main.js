@@ -52,30 +52,10 @@ adapter.on("unload", function(callback) {
   }
 });
 
-// is called if a subscribed object changes
-adapter.on("objectChange", function(id, obj) {
-  // Warning, obj can be null if it was deleted
-  adapter.log.info("objectChange " + id + " " + JSON.stringify(obj));
-});
-
-// is called if a subscribed state changes
-adapter.on("stateChange", function(id, state) {
-  // Warning, state can be null if it was deleted
-  adapter.log.info("stateChange " + id + " " + JSON.stringify(state));
-
-  // you can use the ack flag to detect if it is status (true) or command (false)
-  if (state && !state.ack) {
-    adapter.log.info("ack is not set!");
-  }
-});
-
 // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
 adapter.on("message", function(obj) {
   if (typeof obj == "object" && obj.message) {
     if (obj.command == "send") {
-      // e.g. send email or pushover or whatever
-      console.log("send command");
-
       // Send response in callback if required
       if (obj.callback)
         adapter.sendTo(obj.from, obj.command, "Message received", obj.callback);
@@ -101,11 +81,9 @@ function main() {
 
     if (isNaN(value) || !(typeof exp === "number" && exp % 1 === 0)) return NaN;
 
-    // Shift
     value = value.toString().split("e");
     value = Math.round(+(value[0] + "e" + (value[1] ? +value[1] + exp : exp)));
 
-    // Shift back
     value = value.toString().split("e");
     return +(value[0] + "e" + (value[1] ? +value[1] - exp : -exp));
   };
@@ -127,42 +105,12 @@ function main() {
   function Worker(directory) {
     var worker = this;
     worker.dir = directory;
-    worker.valueSymbol = worker.dir + ".value";
-    worker.reachableSymbol = worker.dir + ".reachable";
+    worker.valueSymbol = directory + ".value";
+    worker.reachableSymbol = directory + ".reachable";
     worker.value = 0.0;
     worker.reachable = false;
 
     var checkObjects = function() {
-      adapter.log.warn(adapter.name);
-      adapter.log.warn(adapter.instance);
-      {
-        var obj = adapter.getObject(
-          adapter.name + "." + adapter.instance + "." + worker.valueSymbol
-        );
-        adapter.log.warn(
-          "obj [" +
-            adapter.name +
-            "." +
-            adapter.instance +
-            "." +
-            worker.valueSymbol +
-            "]: " +
-            obj
-        );
-      }
-      {
-        var obj2 = adapter.getObject(worker.valueSymbol);
-        adapter.log.warn(
-          "obj2 [" +
-            adapter.name +
-            "." +
-            adapter.instance +
-            "." +
-            worker.valueSymbol +
-            "]: " +
-            obj2
-        );
-      }
       adapter.setObject(worker.dir, {
         type: "channel",
         common: {
@@ -174,12 +122,12 @@ function main() {
       });
 
       adapter.setObject(worker.valueSymbol, {
-        type: "value",
+        type: "state",
         common: {
           name: "value",
           type: "number",
           read: "true",
-          write: "false",
+          write: "true",
           role: "value.temperature"
         },
         native: {}
@@ -191,7 +139,7 @@ function main() {
           name: "state",
           type: "boolean",
           read: "true",
-          write: "false",
+          write: "true",
           role: "indicator.reachable"
         },
         native: {}
@@ -199,6 +147,7 @@ function main() {
     };
 
     var readData = function() {
+      adapter.log.info("readData");
       fs.readFile(
         adapter.config.path + "/" + worker.dir + "/" + "w1_slave",
         "utf8",
@@ -207,7 +156,7 @@ function main() {
             adapter.log.warn("readFileError: " + err);
             return;
           }
-
+          // adapter.log.info(data);
           var lines = xSplit(data, ["crc=", "t="]);
           lines.forEach(function(value, index) {
             if (index === 1) {
@@ -218,8 +167,10 @@ function main() {
                 adapter.setState(worker.reachableSymbol, false, true);
                 worker.reachable = false;
               }
+              adapter.log.info(worker.reachable);
             } else if (index === 2 && worker.reachable) {
               var x = round(parseFloat(value) / 1000, 2);
+
               if (x !== worker.value) {
                 adapter.setState(worker.valueSymbol, x, true);
                 worker.value = x;
@@ -237,21 +188,16 @@ function main() {
       return this;
     };
   }
-
-  adapter.log.info("path: " + adapter.config.path);
-
   var workers = [];
   var dirs = getDirectories(adapter.config.path);
 
   adapter.log.info("found sensors: " + dirs.length);
-
   dirs
     .filter(function(dir) {
       if (dir.startsWith("w1_bus_master")) return false;
       return true;
     })
     .forEach(function(dir) {
-      adapter.log.info("dir: " + dir);
       workers.push(new Worker(dir).start());
     });
 }
