@@ -216,7 +216,7 @@ function main() {
     var workers = [];
     var dirs = getDirectories(adapter.config.path);
 
-    adapter.log.log("found sensors: "+dirs.length );
+    adapter.log.info("found sensors: "+dirs.length );
 
     dirs.forEach(function(dir) {
         adapter.log.info('dir: ' + dir);
