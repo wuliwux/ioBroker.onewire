@@ -54,6 +54,11 @@ It includes both code running within iobroker and as vis widget. If you only pla
 
 ## Changelog
 
+### 0.5.1
+  (wuliwux) set picture
+            replace adapter.log.log() with adapter.log.info()
+            set default path to /sys/bus/w1/devices
+
 ### 0.5.0
   (vegetto) include vis widget
 
