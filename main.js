@@ -43,7 +43,7 @@ var path = require("path");
 var adapter = utils.adapter("onewire");
 
 // is called when adapter shuts down - callback has to be called under any circumstances!
-adapter.on("unload", function(callback) {
+adapter.on("unload", function (callback) {
   try {
     adapter.log.info("cleaned everything up...");
     callback();
@@ -53,7 +53,7 @@ adapter.on("unload", function(callback) {
 });
 
 // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
-adapter.on("message", function(obj) {
+adapter.on("message", function (obj) {
   if (typeof obj == "object" && obj.message) {
     if (obj.command == "send") {
       // Send response in callback if required
@@ -65,7 +65,7 @@ adapter.on("message", function(obj) {
 
 // is called when databases are connected and adapter received configuration.
 // start here!
-adapter.on("ready", function() {
+adapter.on("ready", function () {
   main();
 });
 
@@ -73,7 +73,7 @@ function main() {
   // The adapters config (in the instance object everything under the attribute "native") is accessible via
   // adapter.config:
 
-  var round = function(value, exp) {
+  var round = function (value, exp) {
     if (typeof exp === "undefined" || +exp === 0) return Math.round(value);
 
     value = +value;
@@ -88,10 +88,10 @@ function main() {
     return +(value[0] + "e" + (value[1] ? +value[1] - exp : -exp));
   };
 
-  var xSplit = function(string, separators) {
+  var xSplit = function (string, separators) {
     return string
       .split(new RegExp(separators.join("|"), "g"))
-      .map(function(bar) {
+      .map(function (bar) {
         return bar.trim();
       });
   };
@@ -110,55 +110,55 @@ function main() {
     worker.value = 0.0;
     worker.reachable = false;
 
-    var checkObjects = function() {
-      adapter.setObject(worker.dir, {
-        type: "channel",
-        common: {
-          name: worker.dir
-        },
-        native: {
-          interval: adapter.config.defaultInterval
-        }
-      });
-
-      adapter.setObject(worker.valueSymbol, {
-        type: "state",
-        common: {
-          name: "value",
-          type: "number",
-          read: "true",
-          write: "true",
-          role: "value.temperature"
-        },
-        native: {}
-      });
-
-      adapter.setObject(worker.reachableSymbol, {
-        type: "state",
-        common: {
-          name: "state",
-          type: "boolean",
-          read: "true",
-          write: "true",
-          role: "indicator.reachable"
-        },
-        native: {}
-      });
+    var checkObjects = function () {
+      if (!adapter.getObject(worker.dir))
+        adapter.setObject(worker.dir, {
+          type: "channel",
+          common: {
+            name: worker.dir
+          },
+          native: {
+            interval: adapter.config.defaultInterval
+          }
+        });
+      if (!adapter.getObject(worker.valueSymbol))
+        adapter.setObject(worker.valueSymbol, {
+          type: "state",
+          common: {
+            name: "value",
+            type: "number",
+            read: "true",
+            write: "true",
+            role: "value.temperature"
+          },
+          native: {}
+        });
+      if (!adapter.getObject(worker.reachableSymbol))
+        adapter.setObject(worker.reachableSymbol, {
+          type: "state",
+          common: {
+            name: "state",
+            type: "boolean",
+            read: "true",
+            write: "true",
+            role: "indicator.reachable"
+          },
+          native: {}
+        });
     };
 
-    var readData = function() {
-      adapter.log.info("readData");
+    var readData = function () {
+
       fs.readFile(
         adapter.config.path + "/" + worker.dir + "/" + "w1_slave",
         "utf8",
-        function(err, data) {
+        function (err, data) {
           if (err) {
             adapter.log.warn("readFileError: " + err);
             return;
           }
-          // adapter.log.info(data);
           var lines = xSplit(data, ["crc=", "t="]);
-          lines.forEach(function(value, index) {
+          lines.forEach(function (value, index) {
             if (index === 1) {
               if (value.indexOf("YES") >= 0 && !worker.reachable) {
                 adapter.setState(worker.reachableSymbol, true, true);
@@ -167,11 +167,14 @@ function main() {
                 adapter.setState(worker.reachableSymbol, false, true);
                 worker.reachable = false;
               }
-              adapter.log.info(worker.reachable);
             } else if (index === 2 && worker.reachable) {
-              var x = round(parseFloat(value) / 1000, 2);
+              var x = round(parseFloat(value) / 1000, 1);
 
               if (x !== worker.value) {
+                adapter.log.info("setState: " + JSON.stringify({
+                  valueSymbol: worker.valueSymbol,
+                  value: x
+                }));
                 adapter.setState(worker.valueSymbol, x, true);
                 worker.value = x;
               }
@@ -181,7 +184,7 @@ function main() {
       );
     };
 
-    worker.start = function() {
+    worker.start = function () {
       checkObjects();
       readData();
       setInterval(readData, adapter.config.defaultInterval * 1000);
@@ -193,11 +196,11 @@ function main() {
 
   adapter.log.info("found sensors: " + dirs.length);
   dirs
-    .filter(function(dir) {
+    .filter(function (dir) {
       if (dir.startsWith("w1_bus_master")) return false;
       return true;
     })
-    .forEach(function(dir) {
+    .forEach(function (dir) {
       workers.push(new Worker(dir).start());
     });
 }
