@@ -41,7 +41,7 @@
         "restartAdapters": []
     },
     "native": {
-        "path": "X:\\__test\\sys\\bus\\w1\\devices",
+        "path": "/sys/bus/w1/devices",
         "defaultInterval": 60
     },
     "objects": [
