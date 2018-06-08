@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "onewire",
-        "version": "0.6.3",
+        "version": "0.6.4",
         "news": {
             "0.5.0": {
                 "en": "beta version",
@@ -33,7 +33,7 @@
         "mode": "daemon",
         "icon": "onewire.png",
         "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.onewire/master/admin/onewire.png",
+        "extIcon": "https://github.com/wuliwux/iobroker.onewire/blob/master/admin/onewire.png",
         "keywords": ["onewire"],
         "readme": "https://github.com/ioBroker/ioBroker.onewire/blob/master/README.md",
         "loglevel": "info",
