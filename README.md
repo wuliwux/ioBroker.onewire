@@ -54,6 +54,9 @@ It includes both code running within iobroker and as vis widget. If you only pla
 
 ## Changelog
 
+### 0.6.5
+  (wuliwux) various improvements
+
 ### 0.5.1
   (wuliwux) set picture
             replace adapter.log.log() with adapter.log.info()
