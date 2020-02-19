@@ -37,43 +37,54 @@ var utils = require(__dirname + "/lib/utils"); // Get common adapter utils
 var fs = require("fs");
 var path = require("path");
 
-// you have to call the adapter function and pass a options object
-// name has to be set and has to be equal to adapters folder name and main file name excluding extension
-// adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.onewire.0
-var adapter = utils.adapter("onewire");
 
-// is called when adapter shuts down - callback has to be called under any circumstances!
-adapter.on("unload", function(callback) {
-  try {
-    adapter.log.info("cleaned everything up...");
-    callback();
-  } catch (e) {
-    callback();
-  }
-});
+var adapter;
 
-// Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
-adapter.on("message", function(obj) {
-  if (typeof obj == "object" && obj.message) {
-    if (obj.command == "send") {
-      // Send response in callback if required
-      if (obj.callback)
-        adapter.sendTo(obj.from, obj.command, "Message received", obj.callback);
+function startAdapter(options) {
+  options = options || {};
+
+
+  Object.assign(options, { name: "onewire" });
+
+  // you have to call the adapter function and pass a options object
+  // name has to be set and has to be equal to adapters folder name and main file name excluding extension
+  // adapter will be restarted automatically every time as the configuration changed, e.g system.adapter.onewire.0
+  adapter = utils.adapter(options);
+
+  // is called when adapter shuts down - callback has to be called under any circumstances!
+  adapter.on("unload", function (callback) {
+    try {
+      adapter.log.info("cleaned everything up...");
+      callback();
+    } catch (e) {
+      callback();
     }
-  }
-});
+  });
 
-// is called when databases are connected and adapter received configuration.
-// start here!
-adapter.on("ready", function() {
-  main();
-});
+  // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
+  adapter.on("message", function (obj) {
+    if (typeof obj == "object" && obj.message) {
+      if (obj.command == "send") {
+        // Send response in callback if required
+        if (obj.callback)
+          adapter.sendTo(obj.from, obj.command, "Message received", obj.callback);
+      }
+    }
+  });
+
+  // is called when databases are connected and adapter received configuration.
+  // start here!
+  adapter.on("ready", function () {
+    main();
+  });
+}
+
 
 function main() {
   // The adapters config (in the instance object everything under the attribute "native") is accessible via
   // adapter.config:
 
-  var round = function(value, exp) {
+  var round = function (value, exp) {
     if (typeof exp === "undefined" || +exp === 0) return Math.round(value);
 
     value = +value;
@@ -88,10 +99,10 @@ function main() {
     return +(value[0] + "e" + (value[1] ? +value[1] - exp : -exp));
   };
 
-  var xSplit = function(string, separators) {
+  var xSplit = function (string, separators) {
     return string
       .split(new RegExp(separators.join("|"), "g"))
-      .map(function(bar) {
+      .map(function (bar) {
         return bar.trim();
       });
   };
@@ -110,7 +121,7 @@ function main() {
     worker.value = 0.0;
     worker.reachable = false;
 
-    var checkObjects = function() {
+    var checkObjects = function () {
       adapter.log.info("obj: " + JSON.stringify(adapter.getObject(worker.dir)));
 
       adapter.setObjectNotExists(worker.dir, {
@@ -146,17 +157,17 @@ function main() {
       });
     };
 
-    var readData = function() {
+    var readData = function () {
       fs.readFile(
         adapter.config.path + "/" + worker.dir + "/" + "w1_slave",
         "utf8",
-        function(err, data) {
+        function (err, data) {
           if (err) {
             adapter.log.warn("readFileError: " + err);
             return;
           }
           var lines = xSplit(data, ["crc=", "t="]);
-          lines.forEach(function(value, index) {
+          lines.forEach(function (value, index) {
             if (index === 1) {
               if (value.indexOf("YES") >= 0 && !worker.reachable) {
                 adapter.setState(worker.reachableSymbol, true, true);
@@ -171,10 +182,10 @@ function main() {
               if (x !== worker.value) {
                 adapter.log.info(
                   "setState: " +
-                    JSON.stringify({
-                      valueSymbol: worker.valueSymbol,
-                      value: x
-                    })
+                  JSON.stringify({
+                    valueSymbol: worker.valueSymbol,
+                    value: x
+                  })
                 );
                 adapter.setState(worker.valueSymbol, x, true);
                 worker.value = x;
@@ -185,7 +196,7 @@ function main() {
       );
     };
 
-    worker.start = function() {
+    worker.start = function () {
       checkObjects();
       readData();
       setInterval(readData, adapter.config.defaultInterval * 1000);
@@ -197,11 +208,20 @@ function main() {
 
   adapter.log.info("found sensors: " + dirs.length);
   dirs
-    .filter(function(dir) {
+    .filter(function (dir) {
       if (dir.startsWith("w1_bus_master")) return false;
       return true;
     })
-    .forEach(function(dir) {
+    .forEach(function (dir) {
       workers.push(new Worker(dir).start());
     });
+}
+
+
+// If started as allInOne/compact mode => return function to create instance
+if (module && module.parent) {
+  module.exports = startAdapter;
+} else {
+  // or start the instance directly
+  startAdapter();
 }
