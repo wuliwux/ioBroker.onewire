@@ -1,50 +1,52 @@
 {
-    "common": {
-        "name": "onewire",
-        "version": "0.6.5",
-        "news": {
-            "0.5.0": {
-                "en": "beta version",
-                "de": "Betaversion",
-                "ru": "Бета версия",
-                "pt": "Versão beta",
-                "fr": "Version bêta",
-                "nl": "Beta versie"
-            },
-            "0.0.1": {
-                "en": "initial adapter",
-                "de": "Initiale Version",
-                "ru": "Первоначальный адаптер",
-                "pt": "Versão inicial",
-                "fr": "Version initiale",
-                "nl": "Eerste release"
-            }
-        },
-        "title": "Javascript/Node.js based onewire adapter",
-        "desc": {
-            "en": "ioBroker onewire Adapter",
-            "de": "ioBroker Onewire Adapter",
-            "ru": "ioBroker Onewire драйвер как образец",
-            "pt": "Modelo de adaptador para o ioBroker",
-            "fr": "ioBroker adaptateur modèle",
-            "nl": "ioBroker Onewire Adapter"
-        },
-        "platform": "Javascript/Node.js",
-        "mode": "daemon",
-        "icon": "onewire.png",
-        "enabled": true,
-        "extIcon": "https://github.com/wuliwux/iobroker.onewire/blob/master/admin/onewire.png",
-        "keywords": ["onewire"],
-        "readme": "https://github.com/ioBroker/ioBroker.onewire/blob/master/README.md",
-        "loglevel": "info",
-        "type": "general",
-        "restartAdapters": []
-    },
-    "native": {
-        "path": "/sys/bus/w1/devices",
-        "defaultInterval": 60
-    },
-    "objects": [
-
-    ]
+	"common": {
+		"name": "onewire",
+		"version": "0.7.0",
+		"news": {
+			"0.7.0": {
+				"en": "add compact mode",
+				"de": "compact mode hinzugefügt"
+			},
+			"0.5.0": {
+				"en": "beta version",
+				"de": "Betaversion",
+				"ru": "Бета версия",
+				"pt": "Versão beta",
+				"fr": "Version bêta",
+				"nl": "Beta versie"
+			},
+			"0.0.1": {
+				"en": "initial adapter",
+				"de": "Initiale Version",
+				"ru": "Первоначальный адаптер",
+				"pt": "Versão inicial",
+				"fr": "Version initiale",
+				"nl": "Eerste release"
+			}
+		},
+		"title": "Javascript/Node.js based onewire adapter",
+		"desc": {
+			"en": "ioBroker onewire Adapter",
+			"de": "ioBroker Onewire Adapter",
+			"ru": "ioBroker Onewire драйвер как образец",
+			"pt": "Modelo de adaptador para o ioBroker",
+			"fr": "ioBroker adaptateur modèle",
+			"nl": "ioBroker Onewire Adapter"
+		},
+		"platform": "Javascript/Node.js",
+		"mode": "daemon",
+		"icon": "onewire.png",
+		"enabled": true,
+		"extIcon": "https://github.com/wuliwux/iobroker.onewire/blob/master/admin/onewire.png",
+		"keywords": ["onewire"],
+		"readme": "https://github.com/ioBroker/ioBroker.onewire/blob/master/README.md",
+		"loglevel": "info",
+		"type": "general",
+		"restartAdapters": []
+	},
+	"native": {
+		"path": "/sys/bus/w1/devices",
+		"defaultInterval": 60
+	},
+	"objects": []
 }
