@@ -1,9 +1,9 @@
 {
 	"common": {
 		"name": "onewire",
-		"version": "0.7.0",
+		"version": "0.7.1",
 		"news": {
-			"0.7.0": {
+			"0.7.1": {
 				"en": "add compact mode",
 				"de": "compact mode hinzugefügt"
 			},
@@ -38,10 +38,18 @@
 		"icon": "onewire.png",
 		"enabled": true,
 		"extIcon": "https://github.com/wuliwux/iobroker.onewire/blob/master/admin/onewire.png",
+		"authors": ["wuliwux <wuliwux1@gmail.com>"],
 		"keywords": ["onewire"],
 		"readme": "https://github.com/ioBroker/ioBroker.onewire/blob/master/README.md",
 		"loglevel": "info",
 		"type": "general",
+		"compact": true,
+		"materialize": true,
+		"dependencies": [
+			{
+				"js-controller": ">=1.4.2"
+			}
+		],
 		"restartAdapters": []
 	},
 	"native": {
