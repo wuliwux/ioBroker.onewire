@@ -4,12 +4,12 @@
 	"description": "ioBroker onewire Adapter",
 	"author": {
 		"name": "wuliwux",
-		"email": "wuliwux1@gmail.com"
+		"email": "wuliwux@xcore.at"
 	},
 	"contributors": [
 		{
 			"name": "wuliwux",
-			"email": "wuliwux1@gmail.com"
+			"email": "wuliwux@xcore.at"
 		}
 	],
 	"homepage": "https://github.com/ioBroker/ioBroker.onewire",
