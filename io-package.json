@@ -38,7 +38,7 @@
 		"icon": "onewire.png",
 		"enabled": true,
 		"extIcon": "https://github.com/wuliwux/iobroker.onewire/blob/master/admin/onewire.png",
-		"authors": ["wuliwux <wuliwux1@gmail.com>"],
+		"authors": ["wuliwux <wuliwux@xcore.at>"],
 		"keywords": ["onewire"],
 		"readme": "https://github.com/ioBroker/ioBroker.onewire/blob/master/README.md",
 		"loglevel": "info",
