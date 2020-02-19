@@ -1,6 +1,6 @@
 {
 	"common": {
-		"name": "onewire",
+		"name": "iobroker.onewire",
 		"version": "0.7.0",
 		"news": {
 			"0.7.0": {
