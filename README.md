@@ -54,6 +54,9 @@ It includes both code running within iobroker and as vis widget. If you only pla
 
 ## Changelog
 
+### 0.7.0
+	(wuliwux) add compact mode
+
 ### 0.6.5
   (wuliwux) various improvements
 
