@@ -46,6 +46,7 @@
 		"type": "hardware",
 		"connectionType": "local",
 		"compact": true,
+		"license": "MIT",
 		"materialize": true,
 		"dependencies": [
 			{
