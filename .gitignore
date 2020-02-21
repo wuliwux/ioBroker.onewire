@@ -10,8 +10,6 @@ maps/
 # npm package files
 iobroker.*.tgz
 
-package-lock.json
-
 Thumbs.db
 
 # i18n intermediate files
