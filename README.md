@@ -17,25 +17,13 @@ https://tutorials-raspberrypi.de/raspberry-pi-temperatur-mittels-sensor-messen/
 
 ### 0.6.5
 
-(wuliwux) various improvements
+    (wuliwux) various improvements
 
 ### 0.5.1
 
-(wuliwux) set picture
-replace adapter.log.log() with adapter.log.info()
-set default path to /sys/bus/w1/devices
-
-### 0.5.0
-
-(vegetto) include vis widget
-
-#### 0.4.0
-
--   (bluefox) fix errors with grunt
-
-#### 0.2.0
-
--   (bluefox) initial release
+    (wuliwux) set picture
+    replace adapter.log.log() with adapter.log.info()
+    set default path to /sys/bus/w1/devices
 
 ## License
 
