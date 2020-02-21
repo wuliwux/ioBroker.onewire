@@ -24,7 +24,8 @@
 				"nl": "Eerste release"
 			}
 		},
-		"title": "Javascript/Node.js based onewire adapter",
+		"title": "onewire",
+		"titleLang": "Read the Raspberry PI onewire filesystem",
 		"desc": {
 			"en": "ioBroker onewire Adapter",
 			"de": "ioBroker Onewire Adapter",
@@ -42,7 +43,8 @@
 		"keywords": ["onewire"],
 		"readme": "https://github.com/ioBroker/ioBroker.onewire/blob/master/README.md",
 		"loglevel": "info",
-		"type": "general",
+		"type": "hardware",
+		"connectionType": "local",
 		"compact": true,
 		"materialize": true,
 		"dependencies": [
